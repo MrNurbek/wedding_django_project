@@ -32,17 +32,17 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--charcoal);overf
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:22px 48px;transition:background .4s,padding .3s}
-nav.light-nav{background:rgba(247,244,238,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-soft)}
+nav.light-nav{background:transparent}
 nav.dark-nav{background:transparent}
 .nav-center{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--white);letter-spacing:2px;text-align:center}
-nav.light-nav .nav-center{color:var(--charcoal)}
+nav.light-nav .nav-center{color:var(--white)}
 .music-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--card-border);background:rgba(255,255,255,0.1);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:16px;transition:all .2s;backdrop-filter:blur(6px)}
 .music-btn:hover{background:var(--gold);color:var(--charcoal)}
 .nav-anchors{display:none;gap:28px;list-style:none}
 @media(min-width:900px){.nav-anchors{display:flex}}
 .nav-anchors a{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.75);text-decoration:none;transition:color .2s}
 .nav-anchors a:hover{color:var(--gold)}
-nav.light-nav .nav-anchors a{color:var(--gray-text)}
+nav.light-nav .nav-anchors a{color:rgba(255,255,255,0.75)}
 nav.light-nav .nav-anchors a:hover{color:var(--gold)}
 
 /* SECTIONS */
@@ -74,6 +74,7 @@ section{position:relative;width:100%;overflow:hidden}
 
 /* COVER */
 #cover{background:#0a0908}
+#cover::after{content:'';position:absolute;bottom:0;left:0;right:0;height:180px;background:linear-gradient(to bottom,transparent,#0a0807);z-index:3;pointer-events:none}
 .cover-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:40px 24px;animation:fadeIn 1.5s ease}
 .couple-silhouette{width:160px;height:200px;margin:0 auto 32px;background:radial-gradient(ellipse at 50% 30%,rgba(199,164,106,0.15) 0%,transparent 70%);border-radius:50% 50% 0 0;position:relative}
 .couple-silhouette::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100px;height:160px;background:linear-gradient(180deg,rgba(255,255,255,0.06) 0%,rgba(255,255,255,0.02) 100%);border-radius:50% 50% 0 0}
@@ -83,14 +84,20 @@ section{position:relative;width:100%;overflow:hidden}
 .cover-date{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:8px;color:var(--gold);margin-bottom:8px}
 .cover-quote{font-family:var(--serif);font-style:italic;color:rgba(255,255,255,0.55);font-size:15px;margin:8px 0 4px;letter-spacing:0.5px}
 .cover-ref{font-family:var(--sans);font-size:10px;letter-spacing:2px;color:var(--gold-muted);margin-bottom:36px}
-.unlock-btn{display:flex;align-items:center;gap:0;border:1px solid var(--card-border);border-radius:40px;background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);padding:5px;width:min(320px,90vw);cursor:pointer;transition:all .3s;margin:0 auto;box-shadow:0 0 30px rgba(199,164,106,0.1)}
-.unlock-btn:hover{box-shadow:0 0 40px rgba(199,164,106,0.3);border-color:var(--gold);transform:scale(1.02)}
-.unlock-circle{width:44px;height:44px;border-radius:50%;background:rgba(199,164,106,0.15);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:18px;flex-shrink:0}
-.unlock-text{flex:1;text-align:center;font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:3px;color:var(--white)}
-.unlock-arrow{width:44px;height:44px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--charcoal);font-size:18px;flex-shrink:0}
+/* SWIPE TO UNLOCK */
+.swipe-wrap{position:relative;width:min(320px,90vw);margin:0 auto;height:58px;border-radius:40px;border:1px solid var(--card-border);background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);box-shadow:0 0 30px rgba(199,164,106,0.12);overflow:hidden;user-select:none}
+.swipe-track{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.swipe-fill{position:absolute;left:0;top:0;bottom:0;width:58px;background:linear-gradient(90deg,rgba(199,164,106,0.25),rgba(199,164,106,0.08));border-radius:40px;transition:none;pointer-events:none}
+.swipe-label{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,0.5);transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.swipe-handle{position:absolute;left:7px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--charcoal);font-size:20px;cursor:grab;transition:box-shadow .2s;box-shadow:0 2px 12px rgba(199,164,106,0.5);touch-action:none}
+.swipe-handle:active{cursor:grabbing;box-shadow:0 4px 24px rgba(199,164,106,0.7)}
+.swipe-wrap.done .swipe-handle{background:#fff;color:var(--gold)}
+/* unlock flash overlay */
+.unlock-flash{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(199,164,106,0.35) 0%,transparent 70%);z-index:999;pointer-events:none;opacity:0;transition:opacity .4s}
 
 /* HERO */
-#hero{background:#0d0b09;min-height:100vh}
+#hero{background:#0a0807;min-height:100vh}
+#hero::before{content:'';position:absolute;top:0;left:0;right:0;height:180px;background:linear-gradient(to bottom,#0a0807,transparent);z-index:3;pointer-events:none}
 .hero-inner{position:relative;z-index:2;text-align:center;padding:120px 24px 80px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
 .hero-names{font-size:clamp(52px,9vw,96px);margin-bottom:8px;color:var(--white)}
 .hero-date{font-family:var(--sans);font-size:clamp(12px,2vw,15px);letter-spacing:10px;color:var(--gold);font-weight:500;margin-bottom:24px}
@@ -256,10 +263,115 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 .sticky-cta.show{display:flex;align-items:center;justify-content:center}
 .sticky-cta-btn{background:var(--gold);color:var(--charcoal);border:none;border-radius:8px;padding:14px 32px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;max-width:340px}
 
-/* ANIMATIONS */
+/* ============ ANIMATIONS ============ */
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+
+/* fade-in base (fallback) */
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
 .fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* Hero — blur dan tozalanib chiqadi */
+@keyframes blurUp{
+  from{opacity:0;transform:translateY(48px);filter:blur(10px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+.anim-blur-up{opacity:0}
+.anim-blur-up.visible{animation:blurUp .95s cubic-bezier(.16,1,.3,1) forwards}
+.anim-blur-up.visible.d1{animation-delay:.15s}
+.anim-blur-up.visible.d2{animation-delay:.30s}
+.anim-blur-up.visible.d3{animation-delay:.45s}
+
+/* Invitation — kattadan kichkina (zoom-in) */
+@keyframes zoomGlow{
+  from{opacity:0;transform:scale(1.18);filter:blur(6px)}
+  to{opacity:1;transform:scale(1);filter:blur(0)}
+}
+.anim-zoom{opacity:0}
+.anim-zoom.visible{animation:zoomGlow 1.1s cubic-bezier(.16,1,.3,1) forwards}
+.anim-zoom.visible.d1{animation-delay:.2s}
+.anim-zoom.visible.d2{animation-delay:.4s}
+
+/* Date — pastdan yuqoriga */
+@keyframes riseCard{
+  from{opacity:0;transform:translateY(80px) scale(0.95)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.anim-rise{opacity:0}
+.anim-rise.visible{animation:riseCard .9s cubic-bezier(.16,1,.3,1) forwards}
+
+/* Program — chapdan o'ngga ketma-ket */
+@keyframes slideLeft{
+  from{opacity:0;transform:translateX(-50px)}
+  to{opacity:1;transform:translateX(0)}
+}
+.anim-left{opacity:0}
+.anim-left.visible{animation:slideLeft .7s cubic-bezier(.16,1,.3,1) forwards}
+.anim-left.visible.d1{animation-delay:.08s}
+.anim-left.visible.d2{animation-delay:.18s}
+.anim-left.visible.d3{animation-delay:.28s}
+.anim-left.visible.d4{animation-delay:.38s}
+
+/* Venue — yuqoridan pastga + shaffoflikdan */
+@keyframes dropFade{
+  from{opacity:0;transform:translateY(-30px) scale(0.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.anim-drop{opacity:0}
+.anim-drop.visible{animation:dropFade .85s cubic-bezier(.16,1,.3,1) forwards}
+
+/* Maps — o'ngdan chapga */
+@keyframes slideRight{
+  from{opacity:0;transform:translateX(50px)}
+  to{opacity:1;transform:translateX(0)}
+}
+.anim-right{opacity:0}
+.anim-right.visible{animation:slideRight .75s cubic-bezier(.16,1,.3,1) forwards}
+.anim-right.visible.d1{animation-delay:.15s}
+
+/* RSVP — pastdan + yengil burilish */
+@keyframes swingUp{
+  from{opacity:0;transform:translateY(60px) rotate(-1.5deg)}
+  to{opacity:1;transform:translateY(0) rotate(0)}
+}
+.anim-swing{opacity:0}
+.anim-swing.visible{animation:swingUp .9s cubic-bezier(.34,1.3,.64,1) forwards}
+
+/* ============ PARALLAX ============ */
+.parallax-section{overflow:hidden}
+.parallax-bg{position:absolute;inset:-12%;width:calc(100% + 0px);height:calc(100% + 24%);will-change:transform;transition:none}
+.parallax-bg img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ============ TIMELINE ICONS (SVG styled) ============ */
+.tl-icon{
+  width:48px;height:48px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,rgba(199,164,106,0.12),rgba(199,164,106,0.04));
+  border:1.5px solid rgba(199,164,106,0.35);
+  position:relative;z-index:1;box-shadow:0 0 0 4px rgba(199,164,106,0.06)
+}
+.tl-icon svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ============ VENUE CTA ICON ============ */
+.icon-pin svg,.icon-map svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+
+/* ============ MAP PIN REDESIGN ============ */
+.map-pin-dot{
+  width:28px;height:28px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,rgba(255,255,255,0.25),var(--gold));
+  margin:0 auto 8px;
+  box-shadow:0 0 0 8px rgba(199,164,106,0.15),0 0 0 16px rgba(199,164,106,0.06)
+}
+.map-pin-pulse{
+  position:absolute;width:28px;height:28px;border-radius:50%;
+  border:1px solid var(--gold);animation:pinPulse 2s infinite;top:0;left:50%;transform:translateX(-50%)
+}
+@keyframes pinPulse{
+  0%{transform:translateX(-50%) scale(1);opacity:0.6}
+  100%{transform:translateX(-50%) scale(2.4);opacity:0}
+}
+
+/* Unlock bo'lmagan holda barcha bo'limlar yashirin */
+.locked-hidden{display:none!important}
 
 /* RESPONSIVE */
 @media(max-width:768px){
@@ -281,9 +393,11 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 <body>
 
 <!-- AUDIO -->
-<audio id="bg-music" loop preload="none">
+<audio id="bg-music" loop preload="auto">
   <source src="{% static 'music/wedding.mp3' %}" type="audio/mpeg">
 </audio>
+<!-- UNLOCK FLASH -->
+<div class="unlock-flash" id="unlock-flash"></div>
 
 <!-- NAV -->
 <nav id="main-nav" class="dark-nav">
@@ -328,49 +442,51 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
     <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">♡</span><div class="gold-line"></div></div>
     <p class="cover-quote">{{ cfg.ayat_text }}</p>
     <p class="cover-ref">{{ cfg.ayat_ref }}</p>
-    <button class="unlock-btn" onclick="openInvitation()">
-      <div class="unlock-circle">🔒</div>
-      <span class="unlock-text">OCHISH</span>
-      <div class="unlock-arrow">→</div>
-    </button>
+    <div class="swipe-wrap" id="swipe-wrap">
+      <div class="swipe-fill" id="swipe-fill"></div>
+      <div class="swipe-track">
+        <span class="swipe-label" id="swipe-label">O'NGGA TORTING</span>
+      </div>
+      <div class="swipe-handle" id="swipe-handle">🔒</div>
+    </div>
   </div>
 </section>
 
 <!-- PAGE 2: HERO -->
-<section id="hero">
-  <div class="photo-bg photo-hero-bg">
-    {% if cfg.hero_bg %}<img src="{{ cfg.hero_bg.url }}" alt="Hero">{% endif %}
+<section id="hero" class="locked-hidden parallax-section">
+  <div class="photo-bg photo-hero-bg" id="par-hero">
+    {% if cfg.hero_bg %}<img src="{{ cfg.hero_bg.url }}" alt="Hero" class="parallax-bg" data-par="0.35">{% endif %}
   </div>
   <div class="overlay"></div>
-  <div class="hero-inner fade-in">
-    <span class="label-upper">YANGI HAYOTIMIZ BOSHLANMOQDA</span>
-    <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">✦</span><div class="gold-line"></div></div>
-    <div class="script-name hero-names">{{ cfg.groom_name }} & {{ cfg.bride_name }}</div>
-    <div class="hero-date">{{ cfg.wedding_date|date:"d" }} . {{ cfg.wedding_date|date:"m" }} . {{ cfg.wedding_date|date:"Y" }}</div>
-    <p class="body-text hero-quote">Yangi hayotimizning eng muhim kunida sizni yonimizda ko'rishni istaymiz.</p>
-    <div class="scroll-cue">PASTGA AYLANTIRING</div>
+  <div class="hero-inner">
+    <span class="label-upper anim-blur-up d1">YANGI HAYOTIMIZ BOSHLANMOQDA</span>
+    <div class="gold-divider anim-blur-up d2"><div class="gold-line"></div><span class="gold-heart">✦</span><div class="gold-line"></div></div>
+    <div class="script-name hero-names anim-blur-up d2">{{ cfg.groom_name }} & {{ cfg.bride_name }}</div>
+    <div class="hero-date anim-blur-up d3">{{ cfg.wedding_date|date:"d" }} . {{ cfg.wedding_date|date:"m" }} . {{ cfg.wedding_date|date:"Y" }}</div>
+    <p class="body-text hero-quote anim-blur-up d3">Yangi hayotimizning eng muhim kunida sizni yonimizda ko'rishni istaymiz.</p>
+    <div class="scroll-cue anim-blur-up d3">PASTGA AYLANTIRING</div>
   </div>
 </section>
 
 <!-- PAGE 3: INVITATION -->
-<section id="invitation">
-  <div class="photo-bg photo-invite-bg">
-    {% if cfg.invitation_bg %}<img src="{{ cfg.invitation_bg.url }}" alt="Invitation">{% endif %}
+<section id="invitation" class="locked-hidden parallax-section">
+  <div class="photo-bg photo-invite-bg" id="par-invite">
+    {% if cfg.invitation_bg %}<img src="{{ cfg.invitation_bg.url }}" alt="Invitation" class="parallax-bg" data-par="0.3">{% endif %}
   </div>
   <div class="overlay" style="background:rgba(0,0,0,0.65)"></div>
-  <div class="invite-text-wrap fade-in">
-    <span class="label-upper serif-heading invite-qadrli">QADRLI AZIZLARIMIZ!</span>
-    <div class="invite-biz">Biz</div>
-    <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">♡</span><div class="gold-line"></div></div>
-    <p class="invite-main">{{ cfg.invite_message }}</p>
-    <p class="invite-sub">{{ cfg.invite_sub }}</p>
-    <div style="font-size:20px;color:var(--gold);margin-top:24px">♡</div>
+  <div class="invite-text-wrap">
+    <span class="label-upper serif-heading invite-qadrli anim-blur-up d1">QADRLI AZIZLARIMIZ!</span>
+    <div class="invite-biz anim-zoom d1">Biz</div>
+    <div class="gold-divider anim-blur-up d2"><div class="gold-line"></div><span class="gold-heart">♡</span><div class="gold-line"></div></div>
+    <p class="invite-main anim-zoom d2">{{ cfg.invite_message }}</p>
+    <p class="invite-sub anim-blur-up d3">{{ cfg.invite_sub }}</p>
+    <div class="anim-blur-up d3" style="font-size:20px;color:var(--gold);margin-top:24px">♡</div>
   </div>
 </section>
 
 <!-- PAGE 4: DATE & COUNTDOWN -->
-<section id="date-section">
-  <div class="date-card fade-in">
+<section id="date-section" class="locked-hidden">
+  <div class="date-card anim-rise">
     <div class="date-label">SANA</div>
     <div class="big-date">{{ cfg.wedding_date|date:"d m Y" }}</div>
     <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">♡</span><div class="gold-line"></div></div>
@@ -405,10 +521,21 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
   </div>
 </section>
 
+<!-- SVG ICON DEFS -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="ico-glass" viewBox="0 0 24 24"><path d="M8 22h8M12 22v-7M5 2l2 7a5 5 0 0010 0l2-7"/><line x1="5" y1="8" x2="19" y2="8"/></symbol>
+  <symbol id="ico-ring" viewBox="0 0 24 24"><circle cx="12" cy="14" r="7"/><path d="M9 7l1.5-3h3L15 7"/><path d="M9 7h6"/></symbol>
+  <symbol id="ico-plate" viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></symbol>
+  <symbol id="ico-star" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></symbol>
+  <symbol id="ico-location" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="ico-map" viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></symbol>
+  <symbol id="ico-nav" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></symbol>
+</svg>
+
 <!-- PAGE 5: PROGRAM -->
-<section id="program">
+<section id="program" class="locked-hidden">
   <div class="program-inner">
-    <div class="section-title fade-in">
+    <div class="section-title anim-blur-up">
       <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">✦</span><div class="gold-line"></div></div>
       <h2>DASTUR</h2>
       <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">✦</span><div class="gold-line"></div></div>
@@ -416,113 +543,147 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
     <div class="timeline" style="position:relative">
       <div class="timeline-line"></div>
       {% for item in program %}
-      <div class="timeline-item fade-in">
-        <div class="timeline-icon">{{ item.icon }}</div>
+      <div class="timeline-item anim-left d{{ forloop.counter }}">
+        <div class="tl-icon">
+          {% if forloop.counter == 1 %}<svg><use href="#ico-glass"/></svg>
+          {% elif forloop.counter == 2 %}<svg><use href="#ico-ring"/></svg>
+          {% elif forloop.counter == 3 %}<svg><use href="#ico-plate"/></svg>
+          {% else %}<svg><use href="#ico-star"/></svg>{% endif %}
+        </div>
         <div class="timeline-content">
           <div class="timeline-time">{{ item.time }}</div>
           <div class="timeline-event">{{ item.event|upper }}</div>
         </div>
       </div>
       {% empty %}
-      <div class="timeline-item fade-in">
-        <div class="timeline-icon">🥂</div>
+      <div class="timeline-item anim-left d1">
+        <div class="tl-icon"><svg><use href="#ico-glass"/></svg></div>
         <div class="timeline-content"><div class="timeline-time">18:00</div><div class="timeline-event">MEHMONLAR YIG'ILISHI</div></div>
       </div>
-      <div class="timeline-item fade-in">
-        <div class="timeline-icon">💍</div>
+      <div class="timeline-item anim-left d2">
+        <div class="tl-icon"><svg><use href="#ico-ring"/></svg></div>
         <div class="timeline-content"><div class="timeline-time">19:00</div><div class="timeline-event">MAROSIM</div></div>
       </div>
-      <div class="timeline-item fade-in">
-        <div class="timeline-icon">🍽</div>
+      <div class="timeline-item anim-left d3">
+        <div class="tl-icon"><svg><use href="#ico-plate"/></svg></div>
         <div class="timeline-content"><div class="timeline-time">20:00</div><div class="timeline-event">BAYRAM DASTURXONI</div></div>
       </div>
-      <div class="timeline-item fade-in">
-        <div class="timeline-icon">✨</div>
+      <div class="timeline-item anim-left d4">
+        <div class="tl-icon"><svg><use href="#ico-star"/></svg></div>
         <div class="timeline-content"><div class="timeline-time">23:00</div><div class="timeline-event">YAKUNI</div></div>
       </div>
       {% endfor %}
     </div>
-    <div style="text-align:center;margin-top:20px;color:var(--gold);font-size:20px">♡</div>
+    <div class="anim-blur-up" style="text-align:center;margin-top:20px;color:var(--gold);font-size:20px">♡</div>
   </div>
 </section>
 
 <!-- PAGE 6: VENUE -->
-<section id="venue">
-  <div class="photo-bg photo-dark-section"></div>
+<section id="venue" class="locked-hidden parallax-section">
+  <div class="photo-bg" id="par-venue" style="background:#0a0807">
+    <img src="{% static 'img/venue-bg.png' %}" alt="Venue" class="parallax-bg" data-par="0.4" style="opacity:0.35;filter:grayscale(30%)">
+  </div>
   <div class="vignette"></div>
   <div style="position:relative;z-index:2;width:100%;display:flex;justify-content:center;padding:0 16px">
-    <div class="venue-card fade-in">
+    <div class="venue-card anim-drop">
       <div class="venue-top">
-        <span class="label-upper">✦ O'TKAZILISH JOYI</span>
-        <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">◆</span><div class="gold-line"></div></div>
+        <span class="label-upper anim-blur-up">✦ O'TKAZILISH JOYI</span>
+        <div class="gold-divider anim-blur-up d1"><div class="gold-line"></div><span class="gold-heart">◆</span><div class="gold-line"></div></div>
       </div>
       <div class="venue-imgs">
         {% for img in gallery %}
-        <div class="venue-img">
+        <div class="venue-img anim-left d{{ forloop.counter }}">
           <img src="{{ img.image.url }}" alt="{{ img.label }}">
           <div class="venue-img-label">{{ img.label }}</div>
         </div>
         {% empty %}
-        <div class="venue-img">
+        <div class="venue-img anim-left d1">
           <span class="venue-img-placeholder">RESTORAN TASHQI</span>
           <div class="venue-img-label">EXTERIOR</div>
         </div>
-        <div class="venue-img">
+        <div class="venue-img anim-left d2">
           <span class="venue-img-placeholder">TO'Y ZALI</span>
           <div class="venue-img-label">INTERIOR</div>
         </div>
         {% endfor %}
       </div>
-      <div class="venue-info">
+      <div class="venue-info anim-blur-up d2">
         <div class="venue-name">{{ cfg.venue_name }}</div>
-        <div style="color:var(--gold);font-size:14px;margin-bottom:8px">📍</div>
+        <div class="icon-pin" style="color:var(--gold);font-size:14px;margin-bottom:8px">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
         <div class="venue-address">{{ cfg.venue_address }}</div>
-        <button class="venue-cta" onclick="document.getElementById('maps').scrollIntoView({behavior:'smooth'})">📍 &nbsp; XARITADA OCHISH &nbsp; →</button>
+        <button class="venue-cta" onclick="document.getElementById('maps').scrollIntoView({behavior:'smooth'})">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          XARITADA OCHISH
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PAGE 7: MAPS -->
-<section id="maps">
+<section id="maps" class="locked-hidden">
   <div class="maps-inner">
-    <div class="maps-header fade-in">
+    <div class="maps-header anim-blur-up">
       <span style="display:inline-block;padding:6px 16px;border:1px solid var(--card-border);border-radius:20px;font-size:10px;letter-spacing:3px;color:var(--gold);font-weight:600;margin-bottom:16px">LOCATION</span>
       <div style="font-family:var(--serif);font-size:clamp(28px,5vw,44px);color:var(--white);font-weight:300;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px">O'TKAZILISH JOYI</div>
       <div style="font-size:11px;letter-spacing:4px;color:rgba(255,255,255,0.3);margin-bottom:16px;font-weight:500">WHERE LOVE MEETS ELEGANCE</div>
       <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">♡</span><div class="gold-line"></div></div>
     </div>
-    <div class="maps-grid fade-in">
-      <div class="map-card">
+    <div class="maps-grid">
+      <div class="map-card anim-left">
         <div class="map-preview">
           {% if cfg.google_maps_embed %}
           <iframe src="{{ cfg.google_maps_embed }}" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           {% else %}
           <div class="map-grid-lines"></div>
-          <div class="map-pin">
+          <div class="map-pin" style="position:relative">
+            <div class="map-pin-pulse"></div>
             <div class="map-pin-dot"></div>
             <div class="map-pin-label">{{ cfg.venue_name|upper }}</div>
           </div>
           {% endif %}
         </div>
         <div class="map-footer">
-          <span>📍 &nbsp; {{ cfg.venue_name }}</span>
-          {% if cfg.google_maps_url %}<a href="{{ cfg.google_maps_url }}" target="_blank" style="cursor:pointer;color:var(--gold);text-decoration:none">⤢ Ochish</a>{% endif %}
+          <span style="display:flex;align-items:center;gap:6px">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {{ cfg.venue_name }}
+          </span>
+          {% if cfg.google_maps_url %}<a href="{{ cfg.google_maps_url }}" target="_blank" style="cursor:pointer;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:4px"><svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2"><polyline points="15 3 21 3 21 9"/><path d="M21 3L9 15"/><path d="M10 3H3v18h18v-7"/></svg>Ochish</a>{% endif %}
         </div>
       </div>
-      <div class="map-card">
+      <div class="map-card anim-right d1">
         <div class="map-info-card">
           <h3>{{ cfg.venue_name }}</h3>
-          <div class="map-addr">📍 &nbsp; {{ cfg.venue_address }}</div>
+          <div class="map-addr" style="display:flex;align-items:flex-start;gap:8px">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;flex-shrink:0;margin-top:2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {{ cfg.venue_address }}
+          </div>
           {% if cfg.google_maps_url %}
-          <a href="{{ cfg.google_maps_url }}" target="_blank" class="map-btn">🗺 &nbsp; GOOGLE XARITASI &nbsp; →</a>
+          <a href="{{ cfg.google_maps_url }}" target="_blank" class="map-btn">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            GOOGLE XARITASI
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;margin-left:auto"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
           {% else %}
-          <span class="map-btn" style="opacity:0.4;cursor:default">🗺 &nbsp; GOOGLE XARITASI</span>
+          <span class="map-btn" style="opacity:0.4;cursor:default">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            GOOGLE XARITASI
+          </span>
           {% endif %}
           {% if cfg.yandex_maps_url %}
-          <a href="{{ cfg.yandex_maps_url }}" target="_blank" class="map-btn">🗺 &nbsp; YANDEX XARITASI &nbsp; →</a>
+          <a href="{{ cfg.yandex_maps_url }}" target="_blank" class="map-btn">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            YANDEX XARITASI
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;margin-left:auto"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
           {% else %}
-          <span class="map-btn" style="opacity:0.4;cursor:default">🗺 &nbsp; YANDEX XARITASI</span>
+          <span class="map-btn" style="opacity:0.4;cursor:default">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            YANDEX XARITASI
+          </span>
           {% endif %}
           <div class="map-welcome">♡ &nbsp; Xush kelibsiz &nbsp; ♡</div>
         </div>
@@ -532,8 +693,8 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </section>
 
 <!-- PAGE 8: RSVP -->
-<section id="rsvp">
-  <div class="rsvp-card fade-in">
+<section id="rsvp" class="locked-hidden">
+  <div class="rsvp-card anim-swing">
     <div style="text-align:center;margin-bottom:28px">
       <div class="rsvp-pill">R.S.V.P.</div>
       <h2>Ishtirokingizni tasdiqlang</h2>
@@ -584,11 +745,11 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 <!-- GUESTS -->
 <section id="guests" {% if not rsvps %}style="display:none"{% endif %}>
   <div class="guests-inner">
-    <div style="text-align:center;margin-bottom:40px" class="fade-in">
+    <div style="text-align:center;margin-bottom:40px" class="anim-blur-up">
       <div class="gold-divider"><div class="gold-line" style="background:var(--gold-muted)"></div><span class="gold-heart" style="color:var(--gold-muted)">✦</span><div class="gold-line" style="background:var(--gold-muted)"></div></div>
       <div style="font-family:var(--serif);font-size:clamp(28px,5vw,42px);font-weight:300;letter-spacing:4px;text-transform:uppercase;color:var(--charcoal);margin:8px 0">MEHMONLAR</div>
     </div>
-    <div class="stats-row fade-in">
+    <div class="stats-row anim-rise">
       <div class="stat-card"><div class="stat-num" id="stat-total">{{ total }}</div><div class="stat-label">Jami</div></div>
       <div class="stat-card"><div class="stat-num" id="stat-yes">{{ yes_count }}</div><div class="stat-label">Keladi</div></div>
       <div class="stat-card"><div class="stat-num" id="stat-no">{{ no_count }}</div><div class="stat-label">Kela olmaydi</div></div>
@@ -629,7 +790,7 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </section>
 
 <!-- FOOTER -->
-<footer id="site-footer">
+<footer id="site-footer" class="locked-hidden">
   <div class="footer-names">{{ cfg.groom_name }} & {{ cfg.bride_name }}</div>
   <div class="footer-date">{{ cfg.wedding_date|date:"d • m • Y" }}</div>
   <div style="color:var(--gold);margin-bottom:20px">♡</div>
@@ -648,14 +809,96 @@ var musicPlaying = false;
 var CSRF = '{{ csrf_token }}';
 var WEDDING_DATE_ISO = '{{ wedding_date_iso }}';
 
-function openInvitation() {
-  var cover = document.getElementById('cover');
-  cover.style.transition = 'opacity 0.8s ease';
-  cover.style.opacity = '0';
-  setTimeout(function() {
-    cover.style.display = 'none';
-    document.getElementById('hero').scrollIntoView({behavior:'smooth'});
-  }, 800);
+/* ---- SWIPE TO UNLOCK ---- */
+(function(){
+  var handle = document.getElementById('swipe-handle');
+  var wrap   = document.getElementById('swipe-wrap');
+  var fill   = document.getElementById('swipe-fill');
+  var label  = document.getElementById('swipe-label');
+  var flash  = document.getElementById('unlock-flash');
+
+  var dragging = false;
+  var startX = 0;
+  var maxSlide = 0;
+  var currentX = 0;
+
+  function getMax(){ return wrap.offsetWidth - handle.offsetWidth - 14; }
+
+  function onStart(e){
+    if(wrap.classList.contains('done')) return;
+    dragging = true;
+    maxSlide = getMax();
+    startX = (e.touches ? e.touches[0].clientX : e.clientX) - currentX;
+    handle.style.transition = 'none';
+    fill.style.transition = 'none';
+    e.preventDefault();
+  }
+
+  function onMove(e){
+    if(!dragging) return;
+    var x = (e.touches ? e.touches[0].clientX : e.clientX) - startX;
+    x = Math.max(0, Math.min(x, maxSlide));
+    currentX = x;
+    handle.style.left = (7 + x) + 'px';
+    fill.style.width = (58 + x) + 'px';
+    var pct = x / maxSlide;
+    label.style.opacity = 1 - pct * 2;
+    if(pct > 0.85) openInvitation();
+  }
+
+  function onEnd(){
+    if(!dragging) return;
+    dragging = false;
+    if(currentX / getMax() < 0.85){
+      handle.style.transition = 'left .3s ease';
+      fill.style.transition = 'width .3s ease';
+      handle.style.left = '7px';
+      fill.style.width = '58px';
+      currentX = 0;
+      label.style.opacity = 1;
+    }
+  }
+
+  handle.addEventListener('mousedown',  onStart);
+  handle.addEventListener('touchstart', onStart, {passive:false});
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('touchmove', onMove, {passive:false});
+  document.addEventListener('mouseup',   onEnd);
+  document.addEventListener('touchend',  onEnd);
+})();
+
+function openInvitation(){
+  var wrap   = document.getElementById('swipe-wrap');
+  var handle = document.getElementById('swipe-handle');
+  var flash  = document.getElementById('unlock-flash');
+  var cover  = document.getElementById('cover');
+  var audio  = document.getElementById('bg-music');
+
+  wrap.classList.add('done');
+  handle.textContent = '✓';
+  handle.style.left = (wrap.offsetWidth - handle.offsetWidth - 7) + 'px';
+
+  /* muzika allaqachon ishlayapti, faqat ishga tushirilmagan bo'lsa start */
+  startMusic();
+
+  /* flash efekti */
+  flash.style.opacity = '1';
+  setTimeout(function(){ flash.style.opacity = '0'; }, 400);
+
+  /* barcha bo'limlarni ochish, cover yashirish */
+  setTimeout(function(){
+    document.querySelectorAll('.locked-hidden').forEach(function(el){
+      el.classList.remove('locked-hidden');
+    });
+    /* yangi ko'rinadigan elementlarni kuzatishga qo'shish */
+    setTimeout(observeAnims, 50);
+    cover.style.transition = 'opacity 1s ease';
+    cover.style.opacity = '0';
+    setTimeout(function(){
+      cover.style.display = 'none';
+      document.getElementById('hero').scrollIntoView({behavior:'smooth'});
+    }, 1000);
+  }, 300);
 }
 
 function changeCount(delta) {
@@ -768,25 +1011,91 @@ window.addEventListener('scroll', function() {
   }
 });
 
-// Music
-var musicBtn = document.getElementById('music-btn');
+// Music — sahifa ochilishi bilan boshlanadi
 var audio = document.getElementById('bg-music');
+var musicBtn = document.getElementById('music-btn');
+
+function startMusic() {
+  if (musicPlaying) return;
+  audio.volume = 0;
+  audio.play().then(function() {
+    musicPlaying = true;
+    musicBtn.textContent = '⏸';
+    musicBtn.style.background = 'var(--gold)';
+    musicBtn.style.color = 'var(--charcoal)';
+    var vol = 0;
+    var fi = setInterval(function() {
+      vol = Math.min(1, vol + 0.04);
+      audio.volume = vol;
+      if (vol >= 1) clearInterval(fi);
+    }, 80);
+  }).catch(function() {
+    // Brauzer bloklasa — birinchi bosishda ishga tushadi
+    function onFirstInteract() {
+      startMusic();
+      document.removeEventListener('click', onFirstInteract);
+      document.removeEventListener('touchstart', onFirstInteract);
+    }
+    document.addEventListener('click', onFirstInteract);
+    document.addEventListener('touchstart', onFirstInteract);
+  });
+}
+
+// Darhol urinib ko'r
+startMusic();
+
 musicBtn.addEventListener('click', function() {
-  musicPlaying = !musicPlaying;
-  if (musicPlaying) { audio.play().catch(function(){}); }
-  else { audio.pause(); }
-  this.textContent = musicPlaying ? '⏸' : '♪';
-  this.style.background = musicPlaying ? 'var(--gold)' : '';
-  this.style.color = musicPlaying ? 'var(--charcoal)' : 'var(--gold)';
+  if (musicPlaying) {
+    audio.pause();
+    musicPlaying = false;
+    this.textContent = '♪';
+    this.style.background = '';
+    this.style.color = 'var(--gold)';
+  } else {
+    startMusic();
+  }
 });
 
-// Fade-in observer
-var observer = new IntersectionObserver(function(entries) {
+// ---- ANIMATION OBSERVER ----
+var ANIM_CLASSES = [
+  'fade-in','anim-blur-up','anim-zoom','anim-rise',
+  'anim-left','anim-drop','anim-right','anim-swing'
+];
+var animObserver = new IntersectionObserver(function(entries) {
   entries.forEach(function(e) {
-    if (e.isIntersecting) e.target.classList.add('visible');
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      animObserver.unobserve(e.target);
+    }
   });
-}, {threshold: 0.12});
-document.querySelectorAll('.fade-in').forEach(function(el){ observer.observe(el); });
+}, {threshold: 0.12, rootMargin:'0px 0px -40px 0px'});
+
+function observeAnims() {
+  ANIM_CLASSES.forEach(function(cls) {
+    document.querySelectorAll('.' + cls).forEach(function(el) {
+      animObserver.observe(el);
+    });
+  });
+}
+observeAnims();
+
+// ---- PARALLAX ----
+function parallaxTick() {
+  document.querySelectorAll('.parallax-bg').forEach(function(img) {
+    var section = img.closest('section');
+    if (!section) return;
+    var rect = section.getBoundingClientRect();
+    var vh = window.innerHeight;
+    if (rect.bottom < 0 || rect.top > vh) return;
+    var progress = (vh - rect.top) / (vh + rect.height); // 0→1
+    var factor = parseFloat(img.dataset.par || 0.3);
+    var ty = (progress - 0.5) * factor * 120;
+    var scale = 1 + factor * 0.18;
+    img.style.transform = 'translateY(' + ty + 'px) scale(' + scale + ')';
+  });
+}
+window.addEventListener('scroll', parallaxTick, {passive: true});
+parallaxTick();
 
 // Smooth anchor scroll
 document.querySelectorAll('a[href^="#"]').forEach(function(a) {
