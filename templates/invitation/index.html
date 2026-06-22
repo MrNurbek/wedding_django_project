@@ -1,0 +1,801 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ cfg.groom_name }} & {{ cfg.bride_name }} — To'y Taklifnomasi</title>
+<meta name="description" content="{{ cfg.groom_name }} va {{ cfg.bride_name }} to'yiga rasmiy taklif">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --charcoal:#151515;
+  --ivory:#F7F4EE;
+  --gold:#C7A46A;
+  --gold-muted:#A98A54;
+  --white:#FFFFFF;
+  --gray-text:#8C8A86;
+  --border-soft:#EAE5DC;
+  --overlay:rgba(0,0,0,0.58);
+  --card-border:rgba(199,164,106,0.28);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --script:'Great Vibes',cursive;
+  --sans:'Manrope','Inter',sans-serif;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--sans);background:var(--ivory);color:var(--charcoal);overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--charcoal)}
+::-webkit-scrollbar-thumb{background:var(--gold)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:22px 48px;transition:background .4s,padding .3s}
+nav.light-nav{background:rgba(247,244,238,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-soft)}
+nav.dark-nav{background:transparent}
+.nav-center{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--white);letter-spacing:2px;text-align:center}
+nav.light-nav .nav-center{color:var(--charcoal)}
+.music-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--card-border);background:rgba(255,255,255,0.1);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:16px;transition:all .2s;backdrop-filter:blur(6px)}
+.music-btn:hover{background:var(--gold);color:var(--charcoal)}
+.nav-anchors{display:none;gap:28px;list-style:none}
+@media(min-width:900px){.nav-anchors{display:flex}}
+.nav-anchors a{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.75);text-decoration:none;transition:color .2s}
+.nav-anchors a:hover{color:var(--gold)}
+nav.light-nav .nav-anchors a{color:var(--gray-text)}
+nav.light-nav .nav-anchors a:hover{color:var(--gold)}
+
+/* SECTIONS */
+section{position:relative;width:100%;overflow:hidden}
+.full-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+/* BG */
+.photo-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.photo-bg img{width:100%;height:100%;object-fit:cover;opacity:0.45}
+.photo-cover-bg{background:linear-gradient(135deg,#0a0a0a 0%,#1a1714 40%,#0f0d0c 100%)}
+.photo-hero-bg{background:linear-gradient(180deg,#0d0b09 0%,#1c1814 50%,#0a0807 100%)}
+.photo-invite-bg{background:linear-gradient(160deg,#0c0b09 0%,#1a1614 60%,#0e0c0a 100%)}
+.photo-dark-section{background:linear-gradient(180deg,#111010 0%,#1d1b19 50%,#0d0c0b 100%)}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse 100% 100% at 50% 50%,transparent 30%,rgba(0,0,0,0.6) 100%);pointer-events:none;z-index:1}
+.overlay{position:absolute;inset:0;background:var(--overlay);z-index:1}
+.content-z{position:relative;z-index:2;text-align:center;padding:24px}
+
+/* TYPOGRAPHY */
+.label-upper{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block}
+.script-name{font-family:var(--script);color:var(--white);line-height:1.1}
+.serif-heading{font-family:var(--serif);font-weight:300;color:var(--white);letter-spacing:4px;text-transform:uppercase}
+.gold-text{color:var(--gold)}
+.body-text{font-family:var(--sans);font-weight:300;line-height:1.8;color:rgba(255,255,255,0.7);font-size:15px}
+
+/* GOLD DIVIDER */
+.gold-divider{display:flex;align-items:center;justify-content:center;gap:12px;margin:24px auto}
+.gold-line{height:1px;width:60px;background:var(--gold);opacity:0.5}
+.gold-heart{color:var(--gold);font-size:14px}
+
+/* COVER */
+#cover{background:#0a0908}
+.cover-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:40px 24px;animation:fadeIn 1.5s ease}
+.couple-silhouette{width:160px;height:200px;margin:0 auto 32px;background:radial-gradient(ellipse at 50% 30%,rgba(199,164,106,0.15) 0%,transparent 70%);border-radius:50% 50% 0 0;position:relative}
+.couple-silhouette::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100px;height:160px;background:linear-gradient(180deg,rgba(255,255,255,0.06) 0%,rgba(255,255,255,0.02) 100%);border-radius:50% 50% 0 0}
+.couple-photo{width:160px;height:200px;margin:0 auto 32px;border-radius:50% 50% 0 0;overflow:hidden;border:1px solid rgba(199,164,106,0.3)}
+.couple-photo img{width:100%;height:100%;object-fit:cover}
+.cover-names{font-size:clamp(44px,8vw,80px);margin-bottom:12px}
+.cover-date{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:8px;color:var(--gold);margin-bottom:8px}
+.cover-quote{font-family:var(--serif);font-style:italic;color:rgba(255,255,255,0.55);font-size:15px;margin:8px 0 4px;letter-spacing:0.5px}
+.cover-ref{font-family:var(--sans);font-size:10px;letter-spacing:2px;color:var(--gold-muted);margin-bottom:36px}
+.unlock-btn{display:flex;align-items:center;gap:0;border:1px solid var(--card-border);border-radius:40px;background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);padding:5px;width:min(320px,90vw);cursor:pointer;transition:all .3s;margin:0 auto;box-shadow:0 0 30px rgba(199,164,106,0.1)}
+.unlock-btn:hover{box-shadow:0 0 40px rgba(199,164,106,0.3);border-color:var(--gold);transform:scale(1.02)}
+.unlock-circle{width:44px;height:44px;border-radius:50%;background:rgba(199,164,106,0.15);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:18px;flex-shrink:0}
+.unlock-text{flex:1;text-align:center;font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:3px;color:var(--white)}
+.unlock-arrow{width:44px;height:44px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--charcoal);font-size:18px;flex-shrink:0}
+
+/* HERO */
+#hero{background:#0d0b09;min-height:100vh}
+.hero-inner{position:relative;z-index:2;text-align:center;padding:120px 24px 80px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
+.hero-names{font-size:clamp(52px,9vw,96px);margin-bottom:8px;color:var(--white)}
+.hero-date{font-family:var(--sans);font-size:clamp(12px,2vw,15px);letter-spacing:10px;color:var(--gold);font-weight:500;margin-bottom:24px}
+.hero-quote{font-size:15px;max-width:480px;margin:0 auto;opacity:0.7}
+.scroll-cue{margin-top:60px;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,0.3);font-size:11px;letter-spacing:2px}
+.scroll-cue::after{content:'';display:block;width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s infinite}
+@keyframes scrollPulse{0%,100%{opacity:0.3;transform:scaleY(0.5)}50%{opacity:1;transform:scaleY(1)}}
+
+/* INVITATION */
+#invitation{background:#100f0e;min-height:100vh}
+.invite-text-wrap{position:relative;z-index:2;text-align:center;padding:120px 24px;max-width:700px;margin:0 auto}
+.invite-qadrli{font-size:clamp(28px,5vw,48px);letter-spacing:4px;margin-bottom:12px;color:var(--white)}
+.invite-biz{font-family:var(--script);font-size:clamp(72px,13vw,140px);color:var(--gold);margin:0;line-height:0.9}
+.invite-main{font-family:var(--serif);font-size:clamp(22px,4vw,34px);color:rgba(255,255,255,0.9);font-weight:300;margin:20px 0 12px;line-height:1.4}
+.invite-sub{font-size:14px;color:rgba(255,255,255,0.5);letter-spacing:0.5px;line-height:1.8}
+
+/* DATE & COUNTDOWN */
+#date-section{background:var(--ivory);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 24px}
+.date-card{background:var(--white);border-radius:28px;border:1px solid var(--border-soft);padding:48px 40px;max-width:440px;width:100%;box-shadow:0 8px 60px rgba(21,21,21,0.06);text-align:center}
+.date-label{font-size:11px;font-weight:600;letter-spacing:3px;color:var(--gold-muted);margin-bottom:24px;text-transform:uppercase}
+.big-date{font-family:var(--serif);font-size:clamp(44px,10vw,72px);color:var(--charcoal);font-weight:300;letter-spacing:6px;margin-bottom:8px}
+.countdown-label{font-size:10px;letter-spacing:3px;color:var(--gray-text);margin:28px 0 16px;text-transform:uppercase;font-weight:600}
+.countdown-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:32px}
+.countdown-cell{background:var(--ivory);border-radius:12px;padding:14px 6px;border:1px solid var(--border-soft)}
+.countdown-num{font-family:var(--serif);font-size:28px;font-weight:400;color:var(--charcoal);display:block}
+.countdown-unit{font-size:9px;font-weight:600;letter-spacing:2px;color:var(--gray-text);text-transform:uppercase;margin-top:2px;display:block}
+.cal-month{font-family:var(--serif);font-size:16px;font-weight:400;letter-spacing:3px;color:var(--charcoal);margin-bottom:16px;text-transform:uppercase}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-head{font-size:10px;font-weight:600;letter-spacing:1px;color:var(--gray-text);text-align:center;padding:4px 0}
+.cal-day{font-family:var(--sans);font-size:12px;text-align:center;padding:6px 2px;color:var(--charcoal);border-radius:6px}
+.cal-empty{opacity:0}
+.cal-day.highlight{background:transparent;border:1.5px solid var(--gold);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;margin:0 auto;color:var(--gold);font-weight:600}
+.start-time{font-family:var(--sans);font-size:11px;letter-spacing:3px;color:var(--gold);font-weight:600;margin-top:24px;padding-top:20px;border-top:1px solid var(--border-soft)}
+
+/* PROGRAM */
+#program{background:var(--ivory);padding:100px 24px}
+.program-inner{max-width:560px;margin:0 auto}
+.section-title{text-align:center;margin-bottom:60px}
+.section-title h2{font-family:var(--serif);font-size:clamp(32px,6vw,52px);font-weight:300;letter-spacing:6px;text-transform:uppercase;color:var(--charcoal);margin:12px 0}
+.timeline{position:relative;padding-left:0}
+.timeline-line{position:absolute;left:22px;top:20px;bottom:20px;width:1px;background:linear-gradient(to bottom,var(--gold),var(--border-soft),var(--gold));opacity:0.4}
+.timeline-item{display:flex;gap:20px;align-items:flex-start;margin-bottom:40px;position:relative}
+.timeline-icon{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--card-border);background:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gold);font-size:18px;position:relative;z-index:1}
+.timeline-content{padding-top:4px}
+.timeline-time{font-family:var(--serif);font-size:22px;color:var(--charcoal);font-weight:400;margin-bottom:4px}
+.timeline-event{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gray-text);font-weight:600}
+
+/* VENUE */
+#venue{background:#111010;min-height:80vh;padding:80px 24px;display:flex;align-items:center;justify-content:center}
+.venue-card{max-width:860px;width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--card-border);border-radius:32px;padding:48px 40px;backdrop-filter:blur(8px)}
+.venue-top{text-align:center;margin-bottom:36px}
+.venue-imgs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:36px}
+.venue-img{border-radius:20px;height:220px;overflow:hidden;border:1px solid rgba(199,164,106,0.15);position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#1a1814,#0f0e0c)}
+.venue-img img{width:100%;height:100%;object-fit:cover;opacity:0.8}
+.venue-img-label{position:absolute;bottom:12px;left:12px;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.7);font-weight:600;background:rgba(0,0,0,0.5);padding:3px 8px;border-radius:4px}
+.venue-img-placeholder{font-family:var(--serif);color:rgba(255,255,255,0.15);font-size:13px;letter-spacing:2px;z-index:1}
+.venue-info{text-align:center}
+.venue-name{font-family:var(--script);font-size:clamp(36px,7vw,60px);color:var(--gold);margin-bottom:16px}
+.venue-address{font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:0.5px;line-height:1.8;margin-bottom:24px}
+.venue-cta{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--gold);border-radius:8px;padding:12px 28px;color:var(--gold);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;background:transparent;font-family:var(--sans)}
+.venue-cta:hover{background:var(--gold);color:var(--charcoal)}
+
+/* MAPS */
+#maps{background:#0e0d0b;padding:80px 24px}
+.maps-inner{max-width:920px;margin:0 auto}
+.maps-header{text-align:center;margin-bottom:48px}
+.maps-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.map-card{border:1px solid var(--card-border);border-radius:20px;overflow:hidden;background:rgba(255,255,255,0.03)}
+.map-preview{height:280px;background:linear-gradient(145deg,#1a1916,#0f0e0c);display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid var(--card-border)}
+.map-preview iframe{width:100%;height:100%;border:none;filter:grayscale(30%) invert(90%) hue-rotate(180deg)}
+.map-grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(199,164,106,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(199,164,106,0.06) 1px,transparent 1px);background-size:30px 30px}
+.map-pin{position:relative;z-index:1;text-align:center}
+.map-pin-dot{width:20px;height:20px;border-radius:50%;background:var(--gold);margin:0 auto 6px;box-shadow:0 0 0 6px rgba(199,164,106,0.2)}
+.map-pin-label{font-size:10px;letter-spacing:1.5px;color:var(--gold);font-weight:600;background:var(--charcoal);padding:4px 10px;border-radius:4px}
+.map-footer{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.4);font-weight:500}
+.map-info-card{padding:28px}
+.map-info-card h3{font-family:var(--script);font-size:36px;color:var(--gold);margin-bottom:12px}
+.map-addr{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.8;margin:12px 0 20px;padding-bottom:20px;border-bottom:1px solid var(--card-border)}
+.map-btn{display:flex;align-items:center;gap:10px;width:100%;border:1px solid var(--card-border);border-radius:8px;padding:13px 20px;color:rgba(255,255,255,0.7);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;background:transparent;margin-bottom:10px;font-family:var(--sans);text-align:left;text-decoration:none}
+.map-btn:hover{border-color:var(--gold);color:var(--gold)}
+.map-welcome{text-align:center;font-family:var(--serif);font-size:13px;color:rgba(255,255,255,0.3);margin-top:16px;letter-spacing:2px}
+
+/* RSVP */
+#rsvp{background:var(--ivory);padding:100px 24px}
+.rsvp-card{max-width:580px;width:100%;margin:0 auto;background:var(--white);border-radius:24px;border:1px solid var(--border-soft);padding:52px 48px;box-shadow:0 8px 60px rgba(21,21,21,0.06)}
+.rsvp-pill{display:inline-flex;padding:6px 16px;border:1px solid var(--card-border);border-radius:20px;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);margin-bottom:20px;text-transform:uppercase}
+.rsvp-card h2{font-family:var(--serif);font-size:clamp(28px,5vw,40px);font-weight:300;color:var(--charcoal);margin-bottom:6px;letter-spacing:1px}
+.rsvp-sub{font-size:11px;letter-spacing:3px;color:var(--gray-text);font-weight:600;margin-bottom:0;text-transform:uppercase}
+.form-group{margin-bottom:24px}
+.form-label{font-size:10px;letter-spacing:2.5px;font-weight:700;color:var(--gray-text);display:block;margin-bottom:8px;text-transform:uppercase}
+.form-input{width:100%;padding:13px 16px;border:1.5px solid var(--border-soft);border-radius:10px;font-family:var(--sans);font-size:14px;color:var(--charcoal);background:var(--ivory);outline:none;transition:border .2s}
+.form-input:focus{border-color:var(--gold)}
+.form-input::placeholder{color:var(--gray-text)}
+textarea.form-input{resize:vertical;min-height:90px}
+.counter-row{display:flex;align-items:center;gap:16px}
+.counter-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border-soft);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--charcoal);font-size:18px;transition:all .2s;font-family:var(--sans)}
+.counter-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}
+.counter-btn:disabled{opacity:0.3;cursor:not-allowed}
+.counter-val{font-family:var(--serif);font-size:24px;min-width:32px;text-align:center;color:var(--charcoal)}
+.counter-hint{font-size:11px;color:var(--gray-text);margin-top:6px}
+.radio-group{display:flex;flex-direction:column;gap:10px}
+.radio-option{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1.5px solid var(--border-soft);border-radius:10px;cursor:pointer;transition:all .2s;user-select:none}
+.radio-option.selected{border-color:var(--gold);background:rgba(199,164,106,0.05)}
+.radio-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.radio-option.selected .radio-check{border-color:var(--gold);background:var(--gold)}
+.radio-option.selected .radio-check::after{content:'✓';font-size:10px;color:var(--charcoal);font-weight:700}
+.radio-text{font-size:13px;color:var(--charcoal)}
+.submit-btn{width:100%;padding:16px;border-radius:12px;background:var(--charcoal);color:var(--white);font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .3s;margin-top:8px}
+.submit-btn:hover{background:#2a2520;box-shadow:0 4px 20px rgba(199,164,106,0.2)}
+.submit-btn .btn-icon{color:var(--gold);font-size:16px}
+.form-error{font-size:11px;color:#c0392b;margin-top:5px;display:none}
+.form-error.show{display:block}
+.error-border{border-color:#c0392b !important}
+
+/* GUESTS */
+#guests{background:#F0EDE6;padding:80px 24px}
+.guests-inner{max-width:760px;margin:0 auto}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px}
+.stat-card{background:var(--white);border-radius:16px;padding:24px;text-align:center;border:1px solid var(--border-soft)}
+.stat-num{font-family:var(--serif);font-size:40px;color:var(--charcoal);font-weight:300}
+.stat-label{font-size:10px;letter-spacing:2px;color:var(--gray-text);font-weight:600;text-transform:uppercase;margin-top:4px}
+.guests-table-wrap{overflow-x:auto}
+.guests-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:16px;overflow:hidden;border:1px solid var(--border-soft)}
+.guests-table th{font-size:10px;letter-spacing:2px;color:var(--gray-text);font-weight:700;padding:14px 16px;text-align:left;background:var(--ivory);border-bottom:1px solid var(--border-soft);text-transform:uppercase}
+.guests-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border-soft);color:var(--charcoal)}
+.guests-table tr:last-child td{border-bottom:none}
+.status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px}
+.status-badge.status-yes{background:rgba(199,164,106,0.15);color:var(--gold-muted)}
+.status-badge.status-no{background:rgba(100,100,100,0.1);color:var(--gray-text)}
+.guests-empty{text-align:center;color:var(--gray-text);font-style:italic;padding:32px}
+
+/* THANK YOU */
+#thankyou{background:#0a0807;min-height:100vh;display:none;align-items:center;justify-content:center}
+.thankyou-inner{position:relative;z-index:2;text-align:center;padding:80px 24px;max-width:600px;margin:0 auto}
+.check-anim{width:72px;height:72px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 32px;color:var(--gold);font-size:28px;animation:popIn .5s cubic-bezier(0.175,0.885,0.32,1.275) forwards;opacity:0}
+@keyframes popIn{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+.thankyou-biz{font-family:var(--script);font-size:clamp(56px,12vw,100px);color:var(--gold);margin:8px 0;line-height:1}
+.thankyou-main{font-family:var(--serif);font-size:clamp(22px,5vw,38px);letter-spacing:4px;text-transform:uppercase;color:var(--white);font-weight:300;margin-bottom:20px}
+.thankyou-body{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.8;margin-bottom:32px}
+.back-link{font-size:12px;letter-spacing:2px;color:var(--gold);border-bottom:1px solid rgba(199,164,106,0.3);cursor:pointer;padding-bottom:2px;transition:border-color .2s;text-decoration:none;display:inline-block}
+.back-link:hover{border-color:var(--gold)}
+
+/* FOOTER */
+footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top:1px solid rgba(199,164,106,0.1)}
+.footer-names{font-family:var(--serif);font-size:28px;color:var(--white);margin-bottom:8px;font-weight:300}
+.footer-date{font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:24px}
+.footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:20px}
+.footer-link{font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color .2s;text-transform:uppercase}
+.footer-link:hover{color:var(--gold)}
+.footer-copy{font-size:10px;color:rgba(255,255,255,0.15);letter-spacing:1px}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--white);border-radius:24px;padding:48px 40px;max-width:440px;width:100%;text-align:center;animation:popIn .4s cubic-bezier(0.175,0.885,0.32,1.275)}
+.modal-check{width:64px;height:64px;border-radius:50%;background:rgba(199,164,106,0.1);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:var(--gold);font-size:24px}
+.modal-title{font-family:var(--serif);font-size:28px;color:var(--charcoal);margin-bottom:8px}
+.modal-body{font-size:13px;color:var(--gray-text);line-height:1.7;margin-bottom:24px}
+.modal-close{background:var(--charcoal);color:var(--white);border:none;border-radius:10px;padding:13px 32px;font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;font-family:var(--sans);text-transform:uppercase}
+
+/* STICKY CTA */
+.sticky-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:var(--charcoal);border-top:1px solid rgba(199,164,106,0.2);padding:16px 24px}
+.sticky-cta.show{display:flex;align-items:center;justify-content:center}
+.sticky-cta-btn{background:var(--gold);color:var(--charcoal);border:none;border-radius:8px;padding:14px 32px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;max-width:340px}
+
+/* ANIMATIONS */
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  .venue-imgs{grid-template-columns:1fr}
+  .maps-grid{grid-template-columns:1fr}
+  .countdown-grid{grid-template-columns:repeat(2,1fr)}
+  .rsvp-card{padding:32px 24px}
+  .stats-row{grid-template-columns:repeat(3,1fr)}
+  .timeline-line{left:22px}
+}
+@media(max-width:480px){
+  .venue-card{padding:28px 20px}
+  .date-card{padding:32px 20px}
+  .stats-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- AUDIO -->
+<audio id="bg-music" loop preload="none">
+  <source src="{% static 'music/wedding.mp3' %}" type="audio/mpeg">
+</audio>
+
+<!-- NAV -->
+<nav id="main-nav" class="dark-nav">
+  <div style="width:40px"></div>
+  <ul class="nav-anchors">
+    <li><a href="#invitation">Biz haqimizda</a></li>
+    <li><a href="#date-section">Sana</a></li>
+    <li><a href="#program">Dastur</a></li>
+    <li><a href="#venue">Manzil</a></li>
+    <li><a href="#rsvp">RSVP</a></li>
+  </ul>
+  <div class="nav-center">{{ cfg.groom_name }} & {{ cfg.bride_name }}</div>
+  <button class="music-btn" id="music-btn" aria-label="Musiqa">♪</button>
+</nav>
+
+<!-- STICKY CTA -->
+<div class="sticky-cta" id="sticky-cta">
+  <button class="sticky-cta-btn" onclick="document.getElementById('rsvp').scrollIntoView({behavior:'smooth'})">Ishtirokni tasdiqlash</button>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="success-modal">
+  <div class="modal-box">
+    <div class="modal-check">✓</div>
+    <div class="modal-title">Tasdiqlandi!</div>
+    <p class="modal-body">Sizning ishtirokingiz qabul qilindi. Sizi to'yimizda kutamiz — {{ cfg.wedding_date|date:"d.m.Y" }}</p>
+    <button class="modal-close" onclick="closeModal()">Yopish</button>
+  </div>
+</div>
+
+<!-- PAGE 1: COVER -->
+<section id="cover" class="full-screen">
+  <div class="photo-bg photo-cover-bg">
+    {% if cfg.cover_bg %}<img src="{{ cfg.cover_bg.url }}" alt="Cover">{% endif %}
+  </div>
+  <div class="vignette"></div>
+  <div class="cover-inner content-z">
+    <span class="label-upper">SIZGA TAKLIFNOMA KELDI</span>
+    <div class="couple-silhouette"></div>
+    <div class="script-name cover-names">{{ cfg.groom_name }} & {{ cfg.bride_name }}</div>
+    <div class="cover-date">{{ cfg.wedding_date|date:"d" }} • {{ cfg.wedding_date|date:"m" }} • {{ cfg.wedding_date|date:"Y" }}</div>
+    <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">♡</span><div class="gold-line"></div></div>
+    <p class="cover-quote">{{ cfg.ayat_text }}</p>
+    <p class="cover-ref">{{ cfg.ayat_ref }}</p>
+    <button class="unlock-btn" onclick="openInvitation()">
+      <div class="unlock-circle">🔒</div>
+      <span class="unlock-text">OCHISH</span>
+      <div class="unlock-arrow">→</div>
+    </button>
+  </div>
+</section>
+
+<!-- PAGE 2: HERO -->
+<section id="hero">
+  <div class="photo-bg photo-hero-bg">
+    {% if cfg.hero_bg %}<img src="{{ cfg.hero_bg.url }}" alt="Hero">{% endif %}
+  </div>
+  <div class="overlay"></div>
+  <div class="hero-inner fade-in">
+    <span class="label-upper">YANGI HAYOTIMIZ BOSHLANMOQDA</span>
+    <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">✦</span><div class="gold-line"></div></div>
+    <div class="script-name hero-names">{{ cfg.groom_name }} & {{ cfg.bride_name }}</div>
+    <div class="hero-date">{{ cfg.wedding_date|date:"d" }} . {{ cfg.wedding_date|date:"m" }} . {{ cfg.wedding_date|date:"Y" }}</div>
+    <p class="body-text hero-quote">Yangi hayotimizning eng muhim kunida sizni yonimizda ko'rishni istaymiz.</p>
+    <div class="scroll-cue">PASTGA AYLANTIRING</div>
+  </div>
+</section>
+
+<!-- PAGE 3: INVITATION -->
+<section id="invitation">
+  <div class="photo-bg photo-invite-bg">
+    {% if cfg.invitation_bg %}<img src="{{ cfg.invitation_bg.url }}" alt="Invitation">{% endif %}
+  </div>
+  <div class="overlay" style="background:rgba(0,0,0,0.65)"></div>
+  <div class="invite-text-wrap fade-in">
+    <span class="label-upper serif-heading invite-qadrli">QADRLI AZIZLARIMIZ!</span>
+    <div class="invite-biz">Biz</div>
+    <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">♡</span><div class="gold-line"></div></div>
+    <p class="invite-main">{{ cfg.invite_message }}</p>
+    <p class="invite-sub">{{ cfg.invite_sub }}</p>
+    <div style="font-size:20px;color:var(--gold);margin-top:24px">♡</div>
+  </div>
+</section>
+
+<!-- PAGE 4: DATE & COUNTDOWN -->
+<section id="date-section">
+  <div class="date-card fade-in">
+    <div class="date-label">SANA</div>
+    <div class="big-date">{{ cfg.wedding_date|date:"d m Y" }}</div>
+    <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">♡</span><div class="gold-line"></div></div>
+    <div class="countdown-label">TO'YGA QOLGAN VAQT</div>
+    <div class="countdown-grid">
+      <div class="countdown-cell"><span class="countdown-num" id="cd-days">—</span><span class="countdown-unit">KUN</span></div>
+      <div class="countdown-cell"><span class="countdown-num" id="cd-hours">—</span><span class="countdown-unit">SOAT</span></div>
+      <div class="countdown-cell"><span class="countdown-num" id="cd-mins">—</span><span class="countdown-unit">DAQIQA</span></div>
+      <div class="countdown-cell"><span class="countdown-num" id="cd-secs">—</span><span class="countdown-unit">SONIYA</span></div>
+    </div>
+    <div class="calendar">
+      <div class="cal-month">{{ cfg.wedding_date|date:"F Y"|upper }}</div>
+      <div class="cal-grid">
+        <div class="cal-head">Du</div><div class="cal-head">Se</div><div class="cal-head">Ch</div>
+        <div class="cal-head">Pa</div><div class="cal-head">Ju</div><div class="cal-head">Sh</div><div class="cal-head">Ya</div>
+        <!-- Sep 2026: starts Tuesday (index 1) -->
+        <div class="cal-day cal-empty"></div>
+        <div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div>
+        <div class="cal-day">4</div><div class="cal-day">5</div><div class="cal-day">6</div>
+        <div class="cal-day">7</div><div class="cal-day">8</div>
+        <div class="cal-day"><div class="highlight">{{ cfg.wedding_date|date:"j" }}</div></div>
+        <div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day">12</div><div class="cal-day">13</div>
+        <div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day">17</div>
+        <div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div>
+        <div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div>
+        <div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div>
+        <div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div>
+        <div class="cal-day cal-empty"></div><div class="cal-day cal-empty"></div><div class="cal-day cal-empty"></div><div class="cal-day cal-empty"></div>
+      </div>
+    </div>
+    <div class="start-time">✦ &nbsp; BOSHLANISHI {{ cfg.wedding_time|time:"H:i" }} DA &nbsp; ✦</div>
+  </div>
+</section>
+
+<!-- PAGE 5: PROGRAM -->
+<section id="program">
+  <div class="program-inner">
+    <div class="section-title fade-in">
+      <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">✦</span><div class="gold-line"></div></div>
+      <h2>DASTUR</h2>
+      <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">✦</span><div class="gold-line"></div></div>
+    </div>
+    <div class="timeline" style="position:relative">
+      <div class="timeline-line"></div>
+      {% for item in program %}
+      <div class="timeline-item fade-in">
+        <div class="timeline-icon">{{ item.icon }}</div>
+        <div class="timeline-content">
+          <div class="timeline-time">{{ item.time }}</div>
+          <div class="timeline-event">{{ item.event|upper }}</div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="timeline-item fade-in">
+        <div class="timeline-icon">🥂</div>
+        <div class="timeline-content"><div class="timeline-time">18:00</div><div class="timeline-event">MEHMONLAR YIG'ILISHI</div></div>
+      </div>
+      <div class="timeline-item fade-in">
+        <div class="timeline-icon">💍</div>
+        <div class="timeline-content"><div class="timeline-time">19:00</div><div class="timeline-event">MAROSIM</div></div>
+      </div>
+      <div class="timeline-item fade-in">
+        <div class="timeline-icon">🍽</div>
+        <div class="timeline-content"><div class="timeline-time">20:00</div><div class="timeline-event">BAYRAM DASTURXONI</div></div>
+      </div>
+      <div class="timeline-item fade-in">
+        <div class="timeline-icon">✨</div>
+        <div class="timeline-content"><div class="timeline-time">23:00</div><div class="timeline-event">YAKUNI</div></div>
+      </div>
+      {% endfor %}
+    </div>
+    <div style="text-align:center;margin-top:20px;color:var(--gold);font-size:20px">♡</div>
+  </div>
+</section>
+
+<!-- PAGE 6: VENUE -->
+<section id="venue">
+  <div class="photo-bg photo-dark-section"></div>
+  <div class="vignette"></div>
+  <div style="position:relative;z-index:2;width:100%;display:flex;justify-content:center;padding:0 16px">
+    <div class="venue-card fade-in">
+      <div class="venue-top">
+        <span class="label-upper">✦ O'TKAZILISH JOYI</span>
+        <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">◆</span><div class="gold-line"></div></div>
+      </div>
+      <div class="venue-imgs">
+        {% for img in gallery %}
+        <div class="venue-img">
+          <img src="{{ img.image.url }}" alt="{{ img.label }}">
+          <div class="venue-img-label">{{ img.label }}</div>
+        </div>
+        {% empty %}
+        <div class="venue-img">
+          <span class="venue-img-placeholder">RESTORAN TASHQI</span>
+          <div class="venue-img-label">EXTERIOR</div>
+        </div>
+        <div class="venue-img">
+          <span class="venue-img-placeholder">TO'Y ZALI</span>
+          <div class="venue-img-label">INTERIOR</div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="venue-info">
+        <div class="venue-name">{{ cfg.venue_name }}</div>
+        <div style="color:var(--gold);font-size:14px;margin-bottom:8px">📍</div>
+        <div class="venue-address">{{ cfg.venue_address }}</div>
+        <button class="venue-cta" onclick="document.getElementById('maps').scrollIntoView({behavior:'smooth'})">📍 &nbsp; XARITADA OCHISH &nbsp; →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 7: MAPS -->
+<section id="maps">
+  <div class="maps-inner">
+    <div class="maps-header fade-in">
+      <span style="display:inline-block;padding:6px 16px;border:1px solid var(--card-border);border-radius:20px;font-size:10px;letter-spacing:3px;color:var(--gold);font-weight:600;margin-bottom:16px">LOCATION</span>
+      <div style="font-family:var(--serif);font-size:clamp(28px,5vw,44px);color:var(--white);font-weight:300;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px">O'TKAZILISH JOYI</div>
+      <div style="font-size:11px;letter-spacing:4px;color:rgba(255,255,255,0.3);margin-bottom:16px;font-weight:500">WHERE LOVE MEETS ELEGANCE</div>
+      <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">♡</span><div class="gold-line"></div></div>
+    </div>
+    <div class="maps-grid fade-in">
+      <div class="map-card">
+        <div class="map-preview">
+          {% if cfg.google_maps_embed %}
+          <iframe src="{{ cfg.google_maps_embed }}" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          {% else %}
+          <div class="map-grid-lines"></div>
+          <div class="map-pin">
+            <div class="map-pin-dot"></div>
+            <div class="map-pin-label">{{ cfg.venue_name|upper }}</div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="map-footer">
+          <span>📍 &nbsp; {{ cfg.venue_name }}</span>
+          {% if cfg.google_maps_url %}<a href="{{ cfg.google_maps_url }}" target="_blank" style="cursor:pointer;color:var(--gold);text-decoration:none">⤢ Ochish</a>{% endif %}
+        </div>
+      </div>
+      <div class="map-card">
+        <div class="map-info-card">
+          <h3>{{ cfg.venue_name }}</h3>
+          <div class="map-addr">📍 &nbsp; {{ cfg.venue_address }}</div>
+          {% if cfg.google_maps_url %}
+          <a href="{{ cfg.google_maps_url }}" target="_blank" class="map-btn">🗺 &nbsp; GOOGLE XARITASI &nbsp; →</a>
+          {% else %}
+          <span class="map-btn" style="opacity:0.4;cursor:default">🗺 &nbsp; GOOGLE XARITASI</span>
+          {% endif %}
+          {% if cfg.yandex_maps_url %}
+          <a href="{{ cfg.yandex_maps_url }}" target="_blank" class="map-btn">🗺 &nbsp; YANDEX XARITASI &nbsp; →</a>
+          {% else %}
+          <span class="map-btn" style="opacity:0.4;cursor:default">🗺 &nbsp; YANDEX XARITASI</span>
+          {% endif %}
+          <div class="map-welcome">♡ &nbsp; Xush kelibsiz &nbsp; ♡</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 8: RSVP -->
+<section id="rsvp">
+  <div class="rsvp-card fade-in">
+    <div style="text-align:center;margin-bottom:28px">
+      <div class="rsvp-pill">R.S.V.P.</div>
+      <h2>Ishtirokingizni tasdiqlang</h2>
+      <div class="rsvp-sub">BIZ BILAN BIRGA BO'LING</div>
+      <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">♡</span><div class="gold-line"></div></div>
+    </div>
+    <form id="rsvp-form" novalidate>
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label">MEHMON ISMI</label>
+        <input type="text" id="guest-name" class="form-input" placeholder="Ismingizni kiriting">
+        <div class="form-error" id="err-name">Iltimos, ismingizni kiriting</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">MEHMONLAR SONI</label>
+        <div class="counter-row">
+          <button type="button" class="counter-btn" id="cnt-minus" onclick="changeCount(-1)" disabled>−</button>
+          <span class="counter-val" id="guest-count">1</span>
+          <button type="button" class="counter-btn" id="cnt-plus" onclick="changeCount(1)">+</button>
+        </div>
+        <div class="counter-hint">1 dan 5 tagacha mehmon</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">TO'YGA KELASIZMI?</label>
+        <div class="radio-group">
+          <div class="radio-option selected" id="rsvp-yes" onclick="selectRadio('yes')">
+            <div class="radio-check"></div>
+            <span class="radio-text">✓ &nbsp; Ha, mamnuniyat bilan</span>
+          </div>
+          <div class="radio-option" id="rsvp-no" onclick="selectRadio('no')">
+            <div class="radio-check"></div>
+            <span class="radio-text">× &nbsp; Afsuski, kela olmayman</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">IZOH (IXTIYORIY)</label>
+        <textarea class="form-input" id="guest-note" placeholder="Tilak yoki qo'shimcha izohingizni yozing"></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="submit-btn">
+        <span class="btn-icon">♡</span>
+        ISHTIROKNI TASDIQLASH
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- GUESTS -->
+<section id="guests" {% if not rsvps %}style="display:none"{% endif %}>
+  <div class="guests-inner">
+    <div style="text-align:center;margin-bottom:40px" class="fade-in">
+      <div class="gold-divider"><div class="gold-line" style="background:var(--gold-muted)"></div><span class="gold-heart" style="color:var(--gold-muted)">✦</span><div class="gold-line" style="background:var(--gold-muted)"></div></div>
+      <div style="font-family:var(--serif);font-size:clamp(28px,5vw,42px);font-weight:300;letter-spacing:4px;text-transform:uppercase;color:var(--charcoal);margin:8px 0">MEHMONLAR</div>
+    </div>
+    <div class="stats-row fade-in">
+      <div class="stat-card"><div class="stat-num" id="stat-total">{{ total }}</div><div class="stat-label">Jami</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-yes">{{ yes_count }}</div><div class="stat-label">Keladi</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-no">{{ no_count }}</div><div class="stat-label">Kela olmaydi</div></div>
+    </div>
+    <div class="guests-table-wrap fade-in">
+      <table class="guests-table">
+        <thead><tr><th>Ism</th><th>Soni</th><th>Javob</th><th>Izoh</th></tr></thead>
+        <tbody id="guests-tbody">
+          {% for r in rsvps %}
+          <tr>
+            <td>{{ r.name }}</td>
+            <td style="text-align:center">{{ r.guest_count }}</td>
+            <td><span class="status-badge status-{{ r.status }}">{{ r.get_status_display }}</span></td>
+            <td style="color:var(--gray-text);font-style:italic">{{ r.message|default:"—" }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4" class="guests-empty">Hali hech kim ro'yxatdan o'tmagan</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- THANK YOU -->
+<section id="thankyou" style="display:none">
+  <div class="photo-bg photo-dark-section"></div>
+  <div class="overlay" style="background:rgba(0,0,0,0.6)"></div>
+  <div class="thankyou-inner">
+    <div class="check-anim" id="thankyou-check">✓</div>
+    <div style="font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:8px">SIZNING ISHTIROKINGIZ</div>
+    <div class="thankyou-biz">Biz uchun</div>
+    <div class="thankyou-main">ENG MUHIM SOVG'A!</div>
+    <p class="thankyou-body">Javobingiz qabul qilindi.<br>Sizni to'yimizda kutamiz.</p>
+    <div style="color:var(--gold);font-size:24px;margin-bottom:24px">♡</div>
+    <a class="back-link" onclick="goBack()">Taklifnomaga qaytish</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <div class="footer-names">{{ cfg.groom_name }} & {{ cfg.bride_name }}</div>
+  <div class="footer-date">{{ cfg.wedding_date|date:"d • m • Y" }}</div>
+  <div style="color:var(--gold);margin-bottom:20px">♡</div>
+  <div class="footer-links">
+    <a class="footer-link" href="#cover">Bosh sahifa</a>
+    <a class="footer-link" href="#rsvp">RSVP</a>
+    <a class="footer-link" href="#maps">Manzil</a>
+  </div>
+  <div class="footer-copy">To'y Taklifnomasi • {{ cfg.wedding_date|date:"Y" }}</div>
+</footer>
+
+<script>
+var guestCount = 1;
+var rsvpChoice = 'yes';
+var musicPlaying = false;
+var CSRF = '{{ csrf_token }}';
+var WEDDING_DATE_ISO = '{{ wedding_date_iso }}';
+
+function openInvitation() {
+  var cover = document.getElementById('cover');
+  cover.style.transition = 'opacity 0.8s ease';
+  cover.style.opacity = '0';
+  setTimeout(function() {
+    cover.style.display = 'none';
+    document.getElementById('hero').scrollIntoView({behavior:'smooth'});
+  }, 800);
+}
+
+function changeCount(delta) {
+  guestCount = Math.max(1, Math.min(5, guestCount + delta));
+  document.getElementById('guest-count').textContent = guestCount;
+  document.getElementById('cnt-minus').disabled = guestCount <= 1;
+  document.getElementById('cnt-plus').disabled = guestCount >= 5;
+}
+
+function selectRadio(choice) {
+  rsvpChoice = choice;
+  document.getElementById('rsvp-yes').classList.toggle('selected', choice === 'yes');
+  document.getElementById('rsvp-no').classList.toggle('selected', choice === 'no');
+}
+
+// RSVP submit
+document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var name = document.getElementById('guest-name').value.trim();
+  document.getElementById('err-name').classList.remove('show');
+  document.getElementById('guest-name').classList.remove('error-border');
+  if (!name) {
+    document.getElementById('err-name').classList.add('show');
+    document.getElementById('guest-name').classList.add('error-border');
+    return;
+  }
+  var btn = document.getElementById('submit-btn');
+  btn.textContent = 'YUKLANMOQDA...';
+  btn.disabled = true;
+
+  fetch('/rsvp/', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'X-CSRFToken': CSRF},
+    body: JSON.stringify({
+      name: name,
+      guest_count: guestCount,
+      status: rsvpChoice,
+      message: document.getElementById('guest-note').value.trim()
+    })
+  })
+  .then(function(r){return r.json()})
+  .then(function(data) {
+    if (data.success) {
+      document.getElementById('success-modal').classList.add('open');
+      document.getElementById('stat-total').textContent = data.total;
+      document.getElementById('stat-yes').textContent = data.yes_count;
+      document.getElementById('stat-no').textContent = data.no_count;
+    } else {
+      alert(data.error || 'Xatolik yuz berdi');
+    }
+    btn.innerHTML = '<span class="btn-icon">♡</span> ISHTIROKNI TASDIQLASH';
+    btn.disabled = false;
+  })
+  .catch(function() {
+    btn.innerHTML = '<span class="btn-icon">♡</span> ISHTIROKNI TASDIQLASH';
+    btn.disabled = false;
+    alert('Tarmoq xatoligi. Qayta urinib ko\'ring.');
+  });
+});
+
+function closeModal() {
+  document.getElementById('success-modal').classList.remove('open');
+  document.getElementById('rsvp').style.display = 'none';
+  document.getElementById('site-footer').style.display = 'none';
+  var ty = document.getElementById('thankyou');
+  ty.style.display = 'flex';
+  document.getElementById('guests').style.display = 'block';
+  window.scrollTo({top: ty.offsetTop, behavior:'smooth'});
+}
+
+function goBack() {
+  document.getElementById('thankyou').style.display = 'none';
+  document.getElementById('rsvp').style.display = 'block';
+  document.getElementById('site-footer').style.display = 'block';
+  document.getElementById('hero').scrollIntoView({behavior:'smooth'});
+}
+
+// Countdown
+function updateCountdown() {
+  var target = new Date(WEDDING_DATE_ISO);
+  var now = new Date();
+  var diff = target - now;
+  if (diff <= 0) {
+    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(function(id){ document.getElementById(id).textContent = '0'; });
+    return;
+  }
+  document.getElementById('cd-days').textContent = Math.floor(diff / 86400000);
+  document.getElementById('cd-hours').textContent = Math.floor((diff % 86400000) / 3600000);
+  document.getElementById('cd-mins').textContent = Math.floor((diff % 3600000) / 60000);
+  document.getElementById('cd-secs').textContent = Math.floor((diff % 60000) / 1000);
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// Nav scroll behavior
+window.addEventListener('scroll', function() {
+  var nav = document.getElementById('main-nav');
+  var hero = document.getElementById('hero');
+  var heroBottom = hero ? hero.offsetTop + hero.offsetHeight : 0;
+  if (window.scrollY > heroBottom - 80) {
+    nav.classList.replace('dark-nav','light-nav');
+  } else {
+    nav.classList.replace('light-nav','dark-nav');
+  }
+  var cta = document.getElementById('sticky-cta');
+  if (window.innerWidth < 768 && window.scrollY > 600) {
+    cta.classList.add('show');
+  } else {
+    cta.classList.remove('show');
+  }
+});
+
+// Music
+var musicBtn = document.getElementById('music-btn');
+var audio = document.getElementById('bg-music');
+musicBtn.addEventListener('click', function() {
+  musicPlaying = !musicPlaying;
+  if (musicPlaying) { audio.play().catch(function(){}); }
+  else { audio.pause(); }
+  this.textContent = musicPlaying ? '⏸' : '♪';
+  this.style.background = musicPlaying ? 'var(--gold)' : '';
+  this.style.color = musicPlaying ? 'var(--charcoal)' : 'var(--gold)';
+});
+
+// Fade-in observer
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, {threshold: 0.12});
+document.querySelectorAll('.fade-in').forEach(function(el){ observer.observe(el); });
+
+// Smooth anchor scroll
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var id = this.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+</script>
+</body>
+</html>
