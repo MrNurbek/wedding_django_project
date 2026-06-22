@@ -17,8 +17,11 @@ class WeddingConfigAdmin(admin.ModelAdmin):
         ("Xarita havolalari", {
             'fields': ('google_maps_url', 'yandex_maps_url', 'google_maps_embed')
         }),
-        ("Orqa fon rasmlari", {
-            'fields': ('cover_bg', 'hero_bg', 'invitation_bg')
+        ("Orqa fon rasmlari (har bir bo'lim uchun)", {
+            'fields': (
+                'cover_bg', 'hero_bg', 'invitation_bg',
+                'date_bg', 'program_bg', 'venue_bg', 'maps_bg'
+            )
         }),
     )
 

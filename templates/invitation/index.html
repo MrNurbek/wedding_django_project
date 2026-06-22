@@ -50,8 +50,8 @@ section{position:relative;width:100%;overflow:hidden}
 .full-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
 
 /* BG */
-.photo-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.photo-bg img{width:100%;height:100%;object-fit:cover;opacity:0.45}
+.photo-bg{position:absolute;inset:0;overflow:hidden}
+.photo-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.45}
 .photo-cover-bg{background:linear-gradient(135deg,#0a0a0a 0%,#1a1714 40%,#0f0d0c 100%)}
 .photo-hero-bg{background:linear-gradient(180deg,#0d0b09 0%,#1c1814 50%,#0a0807 100%)}
 .photo-invite-bg{background:linear-gradient(160deg,#0c0b09 0%,#1a1614 60%,#0e0c0a 100%)}
@@ -338,8 +338,15 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 
 /* ============ PARALLAX ============ */
 .parallax-section{overflow:hidden}
-.parallax-bg{position:absolute;inset:-12%;width:calc(100% + 0px);height:calc(100% + 24%);will-change:transform;transition:none}
-.parallax-bg img{width:100%;height:100%;object-fit:cover;display:block}
+.parallax-bg{
+  position:absolute;
+  top:-20%;left:-5%;
+  width:110%;height:140%;
+  object-fit:cover;
+  will-change:transform;
+  transition:none;
+  display:block;
+}
 
 /* ============ TIMELINE ICONS (SVG styled) ============ */
 .tl-icon{
@@ -485,7 +492,14 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </section>
 
 <!-- PAGE 4: DATE & COUNTDOWN -->
-<section id="date-section" class="locked-hidden">
+<section id="date-section" class="locked-hidden parallax-section" style="position:relative;overflow:hidden">
+  {% if cfg.date_bg %}
+  <div class="photo-bg" style="background:#0a0807">
+    <img src="{{ cfg.date_bg.url }}" alt="Date bg" class="parallax-bg" data-par="0.3" style="opacity:0.25;filter:grayscale(30%) brightness(0.7)">
+  </div>
+  <div class="vignette"></div>
+  {% endif %}
+  <div style="position:relative;z-index:2">
   <div class="date-card anim-rise">
     <div class="date-label">SANA</div>
     <div class="big-date">{{ cfg.wedding_date|date:"d m Y" }}</div>
@@ -519,6 +533,7 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
     </div>
     <div class="start-time">✦ &nbsp; BOSHLANISHI {{ cfg.wedding_time|time:"H:i" }} DA &nbsp; ✦</div>
   </div>
+  </div>
 </section>
 
 <!-- SVG ICON DEFS -->
@@ -533,7 +548,14 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </svg>
 
 <!-- PAGE 5: PROGRAM -->
-<section id="program" class="locked-hidden">
+<section id="program" class="locked-hidden parallax-section" style="position:relative;overflow:hidden">
+  {% if cfg.program_bg %}
+  <div class="photo-bg" style="background:#0a0807">
+    <img src="{{ cfg.program_bg.url }}" alt="Program bg" class="parallax-bg" data-par="0.3" style="opacity:0.2;filter:grayscale(40%) brightness(0.6)">
+  </div>
+  <div class="vignette"></div>
+  {% endif %}
+  <div style="position:relative;z-index:2">
   <div class="program-inner">
     <div class="section-title anim-blur-up">
       <div class="gold-divider"><div class="gold-line"></div><span class="gold-heart">✦</span><div class="gold-line"></div></div>
@@ -576,12 +598,13 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
     </div>
     <div class="anim-blur-up" style="text-align:center;margin-top:20px;color:var(--gold);font-size:20px">♡</div>
   </div>
+  </div>
 </section>
 
 <!-- PAGE 6: VENUE -->
 <section id="venue" class="locked-hidden parallax-section">
   <div class="photo-bg" id="par-venue" style="background:#0a0807">
-    <img src="{% static 'img/venue-bg.png' %}" alt="Venue" class="parallax-bg" data-par="0.4" style="opacity:0.35;filter:grayscale(30%)">
+    {% if cfg.venue_bg %}<img src="{{ cfg.venue_bg.url }}" alt="Venue" class="parallax-bg" data-par="0.4" style="opacity:0.38;filter:grayscale(15%)">{% endif %}
   </div>
   <div class="vignette"></div>
   <div style="position:relative;z-index:2;width:100%;display:flex;justify-content:center;padding:0 16px">
@@ -624,7 +647,12 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </section>
 
 <!-- PAGE 7: MAPS -->
-<section id="maps" class="locked-hidden">
+<section id="maps" class="locked-hidden parallax-section" style="position:relative;overflow:hidden">
+  <div class="photo-bg" style="background:#0a0807">
+    {% if cfg.maps_bg %}<img src="{{ cfg.maps_bg.url }}" alt="Maps bg" class="parallax-bg" data-par="0.25" style="opacity:0.22;filter:grayscale(100%) brightness(0.6)">{% endif %}
+  </div>
+  <div class="vignette"></div>
+  <div style="position:relative;z-index:2">
   <div class="maps-inner">
     <div class="maps-header anim-blur-up">
       <span style="display:inline-block;padding:6px 16px;border:1px solid var(--card-border);border-radius:20px;font-size:10px;letter-spacing:3px;color:var(--gold);font-weight:600;margin-bottom:16px">LOCATION</span>
@@ -689,6 +717,7 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
         </div>
       </div>
     </div>
+  </div>
   </div>
 </section>
 
@@ -790,16 +819,34 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </section>
 
 <!-- FOOTER -->
-<footer id="site-footer" class="locked-hidden">
-  <div class="footer-names">{{ cfg.groom_name }} & {{ cfg.bride_name }}</div>
-  <div class="footer-date">{{ cfg.wedding_date|date:"d • m • Y" }}</div>
-  <div style="color:var(--gold);margin-bottom:20px">♡</div>
-  <div class="footer-links">
-    <a class="footer-link" href="#cover">Bosh sahifa</a>
-    <a class="footer-link" href="#rsvp">RSVP</a>
-    <a class="footer-link" href="#maps">Manzil</a>
+<footer id="site-footer" class="locked-hidden" style="position:relative;overflow:hidden;padding:0">
+  <div class="photo-bg" style="background:#050403">
+    {% if cfg.maps_bg %}<img src="{{ cfg.maps_bg.url }}" alt="Footer bg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.18;filter:grayscale(100%) brightness(0.5)">{% endif %}
   </div>
-  <div class="footer-copy">To'y Taklifnomasi • {{ cfg.wedding_date|date:"Y" }}</div>
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,rgba(5,4,3,0.92) 100%);z-index:1"></div>
+  <div style="position:relative;z-index:2;padding:64px 24px 40px;text-align:center">
+    <div class="gold-divider" style="margin-bottom:32px"><div class="gold-line"></div><span class="gold-heart">◆</span><div class="gold-line"></div></div>
+    <div style="font-family:var(--script);font-size:clamp(42px,9vw,72px);color:var(--gold);margin-bottom:4px;line-height:1.1">{{ cfg.groom_name }}</div>
+    <div style="font-size:11px;letter-spacing:6px;color:rgba(255,255,255,0.3);margin:6px 0">&amp;</div>
+    <div style="font-family:var(--script);font-size:clamp(42px,9vw,72px);color:var(--gold);margin-bottom:24px;line-height:1.1">{{ cfg.bride_name }}</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:32px">
+      <div style="width:40px;height:1px;background:rgba(199,164,106,0.3)"></div>
+      <div style="font-size:12px;letter-spacing:4px;color:rgba(199,164,106,0.7);font-weight:500">{{ cfg.wedding_date|date:"d • m • Y" }}</div>
+      <div style="width:40px;height:1px;background:rgba(199,164,106,0.3)"></div>
+    </div>
+    <div style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.2);margin-bottom:28px">{{ cfg.venue_name|upper }}</div>
+    <div style="display:flex;justify-content:center;gap:20px;margin-bottom:36px;flex-wrap:wrap">
+      <a href="#hero" style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.25);text-decoration:none;text-transform:uppercase;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">Bosh sahifa</a>
+      <span style="color:rgba(255,255,255,0.1)">·</span>
+      <a href="#program" style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.25);text-decoration:none;text-transform:uppercase;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">Dastur</a>
+      <span style="color:rgba(255,255,255,0.1)">·</span>
+      <a href="#maps" style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.25);text-decoration:none;text-transform:uppercase;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">Manzil</a>
+      <span style="color:rgba(255,255,255,0.1)">·</span>
+      <a href="#rsvp" style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.25);text-decoration:none;text-transform:uppercase;transition:color .2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">RSVP</a>
+    </div>
+    <div class="gold-divider" style="margin-bottom:24px"><div class="gold-line"></div><span class="gold-heart" style="font-size:10px">♡</span><div class="gold-line"></div></div>
+    <div style="font-size:10px;letter-spacing:1px;color:rgba(255,255,255,0.12)">To'y Taklifnomasi &nbsp;·&nbsp; {{ cfg.wedding_date|date:"Y" }}</div>
+  </div>
 </footer>
 
 <script>

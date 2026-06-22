@@ -38,15 +38,31 @@ class WeddingConfig(models.Model):
 
     cover_bg = models.ImageField(
         upload_to='backgrounds/', blank=True, null=True,
-        verbose_name="Cover orqa fon rasmi"
+        verbose_name="1. Cover orqa fon rasmi"
     )
     hero_bg = models.ImageField(
         upload_to='backgrounds/', blank=True, null=True,
-        verbose_name="Hero orqa fon rasmi"
+        verbose_name="2. Hero orqa fon rasmi"
     )
     invitation_bg = models.ImageField(
         upload_to='backgrounds/', blank=True, null=True,
-        verbose_name="Taklif bo'limi orqa fon rasmi"
+        verbose_name="3. Taklif bo'limi orqa fon rasmi"
+    )
+    date_bg = models.ImageField(
+        upload_to='backgrounds/', blank=True, null=True,
+        verbose_name="4. Sana/Countdown orqa fon rasmi"
+    )
+    program_bg = models.ImageField(
+        upload_to='backgrounds/', blank=True, null=True,
+        verbose_name="5. Dastur bo'limi orqa fon rasmi"
+    )
+    venue_bg = models.ImageField(
+        upload_to='backgrounds/', blank=True, null=True,
+        verbose_name="6. Manzil bo'limi orqa fon rasmi"
+    )
+    maps_bg = models.ImageField(
+        upload_to='backgrounds/', blank=True, null=True,
+        verbose_name="7. Xarita bo'limi orqa fon rasmi"
     )
 
     class Meta:

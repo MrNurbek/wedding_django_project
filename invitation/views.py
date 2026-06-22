@@ -1,9 +1,13 @@
 import json
+import datetime
+import zoneinfo
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from .models import WeddingConfig, GalleryImage, ProgramItem, RSVP
+
+TZ_TASHKENT = zoneinfo.ZoneInfo('Asia/Tashkent')
 
 
 def index(request):
@@ -14,7 +18,11 @@ def index(request):
     yes_count = sum(r.guest_count for r in rsvps if r.status == 'yes')
     no_count = sum(r.guest_count for r in rsvps if r.status == 'no')
 
-    wedding_date_iso = config.wedding_date.strftime('%Y-%m-%dT') + config.wedding_time.strftime('%H:%M:%S') + '+05:00'
+    # Toshkent vaqti bilan to'y sana va vaqtini birlashtirish
+    wedding_dt = datetime.datetime.combine(
+        config.wedding_date, config.wedding_time, tzinfo=TZ_TASHKENT
+    )
+    wedding_date_iso = wedding_dt.isoformat()
 
     context = {
         'cfg': config,
