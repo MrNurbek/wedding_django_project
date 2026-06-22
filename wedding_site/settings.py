@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-key')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = ['taklifnoma.coderswar.uz', 'www.taklifnoma.coderswar.uz', '165.22.75.64', 'localhost', '127.0.0.1']
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
