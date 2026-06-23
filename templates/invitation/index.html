@@ -476,10 +476,7 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </section>
 
 <!-- PAGE 3: INVITATION -->
-<section id="invitation" class="locked-hidden parallax-section">
-  <div class="photo-bg photo-invite-bg" id="par-invite">
-    {% if cfg.invitation_bg %}<img src="{{ cfg.invitation_bg.url }}" alt="Invitation" class="parallax-bg" data-par="0.3">{% endif %}
-  </div>
+<section id="invitation" class="locked-hidden" {% if cfg.invitation_bg %}style="background-image:url('{{ cfg.invitation_bg.url }}');background-size:cover;background-position:center;background-attachment:fixed;"{% endif %}>
   <div class="overlay" style="background:rgba(0,0,0,0.65)"></div>
   <div class="invite-text-wrap">
     <span class="label-upper serif-heading invite-qadrli anim-blur-up d1">QADRLI AZIZLARIMIZ!</span>
@@ -492,13 +489,8 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </section>
 
 <!-- PAGE 4: DATE & COUNTDOWN -->
-<section id="date-section" class="locked-hidden parallax-section" style="position:relative;overflow:hidden">
-  {% if cfg.date_bg %}
-  <div class="photo-bg" style="background:#0a0807">
-    <img src="{{ cfg.date_bg.url }}" alt="Date bg" class="parallax-bg" data-par="0.3" style="opacity:0.25;filter:grayscale(30%) brightness(0.7)">
-  </div>
-  <div class="vignette"></div>
-  {% endif %}
+<section id="date-section" class="locked-hidden" {% if cfg.date_bg %}style="background-image:url('{{ cfg.date_bg.url }}');background-size:cover;background-position:center;background-attachment:fixed;"{% endif %}>
+  {% if cfg.date_bg %}<div class="overlay" style="background:rgba(0,0,0,0.70)"></div>{% endif %}
   <div style="position:relative;z-index:2">
   <div class="date-card anim-rise">
     <div class="date-label">SANA</div>
@@ -548,13 +540,8 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </svg>
 
 <!-- PAGE 5: PROGRAM -->
-<section id="program" class="locked-hidden parallax-section" style="position:relative;overflow:hidden">
-  {% if cfg.program_bg %}
-  <div class="photo-bg" style="background:#0a0807">
-    <img src="{{ cfg.program_bg.url }}" alt="Program bg" class="parallax-bg" data-par="0.3" style="opacity:0.2;filter:grayscale(40%) brightness(0.6)">
-  </div>
-  <div class="vignette"></div>
-  {% endif %}
+<section id="program" class="locked-hidden" {% if cfg.program_bg %}style="background-image:url('{{ cfg.program_bg.url }}');background-size:cover;background-position:center;background-attachment:fixed;"{% endif %}>
+  {% if cfg.program_bg %}<div class="overlay" style="background:rgba(0,0,0,0.72)"></div>{% endif %}
   <div style="position:relative;z-index:2">
   <div class="program-inner">
     <div class="section-title anim-blur-up">
@@ -602,11 +589,8 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </section>
 
 <!-- PAGE 6: VENUE -->
-<section id="venue" class="locked-hidden parallax-section">
-  <div class="photo-bg" id="par-venue" style="background:#0a0807">
-    {% if cfg.venue_bg %}<img src="{{ cfg.venue_bg.url }}" alt="Venue" class="parallax-bg" data-par="0.4" style="opacity:0.38;filter:grayscale(15%)">{% endif %}
-  </div>
-  <div class="vignette"></div>
+<section id="venue" class="locked-hidden" {% if cfg.venue_bg %}style="background-image:url('{{ cfg.venue_bg.url }}');background-size:cover;background-position:center;background-attachment:fixed;"{% endif %}>
+  <div class="overlay" style="background:rgba(0,0,0,0.68)"></div>
   <div style="position:relative;z-index:2;width:100%;display:flex;justify-content:center;padding:0 16px">
     <div class="venue-card anim-drop">
       <div class="venue-top">
@@ -647,11 +631,8 @@ footer{background:var(--charcoal);padding:48px 24px;text-align:center;border-top
 </section>
 
 <!-- PAGE 7: MAPS -->
-<section id="maps" class="locked-hidden parallax-section" style="position:relative;overflow:hidden">
-  <div class="photo-bg" style="background:#0a0807">
-    {% if cfg.maps_bg %}<img src="{{ cfg.maps_bg.url }}" alt="Maps bg" class="parallax-bg" data-par="0.25" style="opacity:0.22;filter:grayscale(100%) brightness(0.6)">{% endif %}
-  </div>
-  <div class="vignette"></div>
+<section id="maps" class="locked-hidden" {% if cfg.maps_bg %}style="background-image:url('{{ cfg.maps_bg.url }}');background-size:cover;background-position:center;background-attachment:fixed;"{% endif %}>
+  {% if cfg.maps_bg %}<div class="overlay" style="background:rgba(0,0,0,0.75)"></div>{% endif %}
   <div style="position:relative;z-index:2">
   <div class="maps-inner">
     <div class="maps-header anim-blur-up">
@@ -1126,15 +1107,15 @@ function observeAnims() {
 }
 observeAnims();
 
-// ---- PARALLAX ----
+// ---- PARALLAX (cover & hero uchun JS, qolganlar CSS fixed) ----
 function parallaxTick() {
   document.querySelectorAll('.parallax-bg').forEach(function(img) {
-    var section = img.closest('section');
+    var section = img.closest('section') || img.closest('#cover');
     if (!section) return;
     var rect = section.getBoundingClientRect();
     var vh = window.innerHeight;
     if (rect.bottom < 0 || rect.top > vh) return;
-    var progress = (vh - rect.top) / (vh + rect.height); // 0→1
+    var progress = (vh - rect.top) / (vh + rect.height);
     var factor = parseFloat(img.dataset.par || 0.3);
     var ty = (progress - 0.5) * factor * 120;
     var scale = 1 + factor * 0.18;
